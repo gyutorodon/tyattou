@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チャッ糖</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // サーバーに接続した時
+        socket.on('connect', function() {
+            console.log("Connected to server");
+        });
+
+        // メッセージ受信
+        socket.on('message', function(data) {
+            var message = document.createElement('div');
+            message.textContent = data.user + ": " + data.text;
+            document.getElementById('messages').appendChild(message);
+        });
+
+        // メッセージを送信
+        function sendMessage() {
+            var user = document.getElementById('user').value;
+            var text = document.getElementById('message').value;
+            socket.send({user: user, text: text});
+            document.getElementById('message').value = '';  // メッセージ送信後に入力欄をリセット
+        }
+    </script>
+</head>
+<body>
+    <h1>チャッ糖</h1>
+    <div>
+        <input type="text" id="user" placeholder="Enter your name" required>
+        <input type="text" id="message" placeholder="Type a message" required>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <div id="messages" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;"></div>
+</body>
+</html>
+
