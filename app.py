@@ -17,3 +17,6 @@ def handle_message(data):
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)  # サーバーを起動
+@app.route("/")
+def home():
+    return render_template("index.html")  # ここは適切なHTMLファイルに変更
